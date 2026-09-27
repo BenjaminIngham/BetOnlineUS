@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Climora — A Field Guide to Weather &amp; Climate</title>
+<meta name="description" content="A free, carefully researched field guide to clouds, storms, climate zones, and weather phenomena, with journal entries on forecasting and climate science.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sky:#EAF2F5; --sky-deep:#DCEAEF; --surface:#FFFFFF; --ink:#1D3A4A; --ink-soft:#4F6B78; --ink-mute:#82989F;
+  --cyan:#2FA8D8; --amber:#E8A23C; --purple:#6B5B95; --line:#CFE0E6;
+  --shadow: 0 18px 38px rgba(29,58,74,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;margin:0 0 .4em;color:var(--ink)}
+p{margin:0 0 1em}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+::selection{background:var(--cyan);color:#fff}
+
+.topbar{position:sticky;top:0;z-index:50;background:rgba(234,242,245,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1180px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.wordmark{font-family:'Plus Jakarta Sans',sans-serif;font-size:1.5rem;font-weight:800}
+.navlinks{display:flex;gap:26px}
+.navlinks a{font-size:.88rem;color:var(--ink-soft);border-bottom:1px solid transparent;padding-bottom:4px}
+.navlinks a.active,.navlinks a:hover{color:var(--cyan);border-color:var(--cyan)}
+.menu-btn{display:none;font-size:1.2rem}
+@media(max-width:900px){.navlinks{display:none}.menu-btn{display:block}}
+.mobile-nav{display:none;flex-direction:column;padding:6px 24px 16px;border-bottom:1px solid var(--line);background:var(--sky)}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:12px 4px;border-bottom:1px solid var(--line);font-weight:600}
+
+.announce{text-align:center;font-size:.8rem;padding:8px 16px;color:var(--cyan);border-bottom:1px solid var(--line);font-weight:700}
+
+.isobar-hero{padding:0}
+.isobar-band{position:relative;min-height:58vh;overflow:hidden;display:flex;align-items:center}
+.isobar-band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.isobar-band::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(29,58,74,.8),rgba(29,58,74,.22));z-index:1}
+.isobar-svg{position:absolute;right:2%;top:50%;transform:translateY(-50%);width:420px;height:420px;z-index:2;opacity:.6;pointer-events:none}
+@media(max-width:900px){.isobar-svg{display:none}}
+.isobar-hero-content{position:relative;z-index:3;padding:56px 40px;max-width:610px}
+.isobar-hero-content .eyebrow{color:var(--amber);font-weight:700;font-size:.8rem;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px}
+.isobar-hero-content h1{color:#fff;font-size:clamp(2rem,4.4vw,3.1rem);line-height:1.14}
+.isobar-hero-content p{color:#DCEAF0;max-width:46ch;font-size:1.02rem}
+.hero-ctas{display:flex;gap:14px;flex-wrap:wrap;margin-top:20px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:100px;font-weight:700;font-size:.86rem;transition:transform .15s}
+.btn-primary{background:var(--cyan);color:#fff}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-outline{border:1px solid #fff;color:#fff}
+.btn-outline:hover{background:#fff;color:var(--ink)}
+
+.cat-strip{padding:40px 0}
+.cat-strip-row{display:flex;justify-content:center;gap:0;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cat-strip-row a{padding:18px 30px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1.02rem;color:var(--ink-soft);border-right:1px solid var(--line)}
+.cat-strip-row a:last-child{border-right:none}
+.cat-strip-row a:hover{color:var(--cyan)}
+
+.centered-intro{padding:20px 0 70px;text-align:center;max-width:620px;margin:0 auto}
+.intro-eyebrow{color:var(--amber);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px}
+.centered-intro h2{font-size:1.9rem}
+.centered-intro p{color:var(--ink-soft);font-size:1.02rem}
+
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:32px;flex-wrap:wrap}
+.section-head h2{font-size:1.8rem;margin:0}
+.section-head p{color:var(--ink-mute);margin:0;max-width:44ch}
+.species-section{padding:20px 0 70px}
+.cloud-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+@media(max-width:980px){.cloud-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.cloud-grid{grid-template-columns:1fr}}
+.cloud-card{position:relative;display:block;background:var(--surface);border-radius:16px;overflow:hidden;box-shadow:0 10px 22px rgba(29,58,74,.10);transition:transform .18s}
+.cloud-card:hover{transform:translateY(-4px)}
+.cloud-media{position:relative;aspect-ratio:1/1;overflow:hidden}
+.cloud-media img{width:100%;height:100%;object-fit:cover}
+.cloud-badge{position:absolute;bottom:10px;right:10px;background:rgba(29,58,74,.85);color:var(--amber);font-size:.66rem;padding:4px 10px;border-radius:20px;font-weight:700;border:1px solid var(--amber)}
+.cloud-body{padding:16px 18px 18px}
+.cloud-cat{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--cyan);font-weight:700}
+.cloud-card h3{font-size:.98rem;margin:.3em 0 .1em;font-weight:600}
+.cloud-latin{font-style:italic;color:var(--ink-mute);font-size:.84rem}
+
+.filterbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.filterbar button{padding:9px 18px;border-radius:100px;border:1px solid var(--line);background:var(--surface);font-size:.85rem;font-weight:600}
+.filterbar button.active{background:var(--cyan);color:#fff;border-color:var(--cyan)}
+
+.journal{padding:20px 0 90px}
+.isobar-field{background-image:radial-gradient(circle at 15% 20%, rgba(47,168,216,.06) 0, rgba(47,168,216,.06) 18px, transparent 19px, transparent 36px, rgba(47,168,216,.06) 37px, transparent 55px),radial-gradient(circle at 85% 70%, rgba(107,91,149,.06) 0, rgba(107,91,149,.06) 18px, transparent 19px, transparent 36px, rgba(107,91,149,.06) 37px, transparent 55px);padding:30px;border-radius:20px}
+.isobar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media(max-width:860px){.isobar-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.isobar-grid{grid-template-columns:1fr}}
+.isobar-card{display:block;background:var(--surface);border-radius:16px;overflow:hidden;box-shadow:0 8px 18px rgba(29,58,74,.1);border:1px solid var(--line)}
+.isobar-card img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.isobar-body{padding:16px 18px 18px}
+.isobar-cat{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--amber);font-weight:700}
+.isobar-body h3{font-size:1rem;margin:.3em 0 .3em}
+.isobar-body p{color:var(--ink-soft);font-size:.87rem;margin:0 0 .3em}
+.isobar-meta{font-size:.75rem;color:var(--ink-mute)}
+
+.newsletter{padding:70px 0;text-align:center;background:var(--sky-deep)}
+.newsletter h2{font-size:1.7rem}
+.newsletter p{color:var(--ink-mute);max-width:44ch;margin:0 auto 22px}
+.nl-form{display:flex;gap:10px;max-width:400px;margin:0 auto;flex-wrap:wrap;justify-content:center}
+.nl-form input{flex:1;min-width:200px;padding:12px 18px;border-radius:100px;border:1px solid var(--line);background:var(--surface);font:inherit}
+.nl-form button{background:var(--purple);color:#fff;padding:12px 22px;border-radius:100px;font-weight:700}
+
+footer{padding:56px 0 26px}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px}
+.foot-brand p{color:var(--ink-mute);max-width:34ch}
+.foot-col h4{font-size:.78rem;color:var(--cyan);margin-bottom:14px}
+.foot-col a{display:block;color:var(--ink-soft);padding:6px 0;font-size:.9rem}
+.foot-bottom{border-top:1px solid var(--line);margin-top:36px;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.78rem;color:var(--ink-mute)}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+
+.pagehero{padding:56px 0 10px}
+.pagehero h1{font-size:clamp(1.9rem,4vw,2.6rem)}
+.pagehero p{color:var(--ink-soft);max-width:56ch}
+.crumb{font-size:.8rem;color:var(--ink-mute);margin-bottom:14px}
+.crumb a{color:var(--cyan)}
+
+.pd{display:grid;grid-template-columns:1fr 1fr;gap:52px;padding:24px 0 70px}
+.pd-media{border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.pd-media img{width:100%}
+.pd-cat{color:var(--cyan);font-weight:700;font-size:.82rem;text-transform:uppercase}
+.pd h1{font-size:2rem;margin:.25em 0 .1em}
+.pd-latin{font-style:italic;color:var(--ink-mute);font-size:1.05rem;margin-bottom:6px}
+.pd-stat{display:inline-block;background:var(--ink);color:var(--amber);font-size:.78rem;padding:5px 14px;border-radius:20px;font-weight:700;margin-bottom:16px}
+.pd-desc{color:var(--ink-soft);margin-bottom:20px}
+.pd-feat{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:9px}
+.pd-feat li{padding-left:20px;position:relative;color:var(--ink-soft);font-size:.94rem}
+.pd-feat li::before{content:"✓";position:absolute;left:0;color:var(--cyan);font-weight:700}
+@media(max-width:860px){.pd{grid-template-columns:1fr}}
+
+.article-wrap{max-width:680px;margin:0 auto;padding:24px 24px 70px}
+.article-wrap img{border-radius:16px;margin:24px 0;box-shadow:var(--shadow)}
+.article-wrap h1{font-size:1.9rem}
+.article-wrap p{color:var(--ink-soft);font-size:1.04rem}
+
+.faq-list{max-width:760px;margin:0 auto;padding:10px 24px 70px}
+.faq-item{border-bottom:1px solid var(--line);padding:20px 0}
+.faq-item summary{cursor:pointer;font-weight:600;font-size:1rem;list-style:none;display:flex;justify-content:space-between}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{content:"+";font-size:1.2rem;color:var(--cyan)}
+.faq-item[open] summary::after{content:"–"}
+.faq-item p{color:var(--ink-soft);margin-top:12px}
+.legal-body{max-width:760px;margin:0 auto;padding:10px 24px 70px}
+.legal-body h2{font-size:1.15rem;margin-top:1.6em}
+.legal-body p{color:var(--ink-soft)}
+.legal-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:30px}
+.legal-tabs a{padding:8px 14px;border:1px solid var(--line);font-size:.84rem;border-radius:100px}
+.legal-tabs a.active{background:var(--cyan);color:#fff;border-color:var(--cyan)}
+.updated{color:var(--ink-mute);font-size:.84rem;margin-bottom:10px}
+
+.about-body{max-width:680px;margin:0 auto;padding:20px 24px}
+.about-body p{color:var(--ink-soft);font-size:1.03rem}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:20px 24px 70px;max-width:1180px;margin:0 auto}
+.value-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px}
+.value-card h4{font-size:1.02rem;margin-bottom:6px;color:var(--cyan)}
+.value-card p{color:var(--ink-soft);font-size:.92rem;margin:0}
+@media(max-width:760px){.values-grid{grid-template-columns:1fr}}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;padding:20px 24px 70px;max-width:1000px;margin:0 auto}
+.contact-info p{color:var(--ink-soft)}
+.contact-info h4{font-size:.8rem;color:var(--cyan);margin:20px 0 4px}
+.contact-form{display:flex;flex-direction:column;gap:12px}
+.contact-form input,.contact-form textarea{padding:13px 16px;border-radius:12px;border:1px solid var(--line);font:inherit;background:var(--surface)}
+.contact-form textarea{min-height:120px;resize:vertical}
+@media(max-width:760px){.contact-grid{grid-template-columns:1fr}}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:13px 22px;border-radius:100px;font-size:.9rem;opacity:0;pointer-events:none;transition:all .25s;z-index:120}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(prefers-reduced-motion: reduce){*{transition:none !important;scroll-behavior:auto !important}}
+</style>
+</head>
+<body>
+
+<div class="announce">A free field guide — every entry checked against real meteorology sources</div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="#/" class="wordmark">Climora</a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#/" data-route="/">Home</a>
+      <a href="#/species" data-route="/species">Weather Guide</a>
+      <a href="#/blog" data-route="/blog">Journal</a>
+      <a href="#/about" data-route="/about">About</a>
+      <a href="#/contact" data-route="/contact">Contact</a>
+    </nav>
+    <button class="menu-btn" onclick="document.getElementById('mnav').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav" id="mnav">
+    <a href="#/">Home</a><a href="#/species">Weather Guide</a><a href="#/blog">Journal</a><a href="#/about">About</a><a href="#/contact">Contact</a><a href="#/faq">FAQ</a>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="wordmark">Climora</div>
+        <p>A free field guide to clouds, storms, climate zones, and weather phenomena.</p>
+      </div>
+      <div class="foot-col"><h4>Weather Guide</h4>
+        <a href="#/species?cat=Cloud%20Types">Cloud Types</a>
+        <a href="#/species?cat=Storm%20Types">Storm Types</a>
+        <a href="#/species?cat=Climate%20Zones">Climate Zones</a>
+        <a href="#/species?cat=Weather%20Phenomena">Weather Phenomena</a>
+      </div>
+      <div class="foot-col"><h4>Company</h4>
+        <a href="#/about">About Climora</a>
+        <a href="#/blog">Journal</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/faq">FAQ</a>
+      </div>
+      <div class="foot-col"><h4>Legal</h4>
+        <a href="#/legal/privacy">Privacy</a>
+        <a href="#/legal/terms">Terms</a>
+        <a href="#/legal/cookies">Cookies</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Climora. All rights reserved.</span>
+      <span>An independent educational resource</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DATA = {"species": [{"id": "cumulus", "name": "Cumulus", "cat": "Cloud Types", "latin": "Cumulus", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "Low, fair", "desc": "A genuine puffy, cotton-like cloud, actually forms from rising warm air and usually real signals fair weather ahead.", "facts": ["Altitude: 1,000-6,500 ft", "Shape: flat base, rounded top", "Usually signals fair weather", "Can grow into cumulonimbus"], "num": "01"}, {"id": "cirrus", "name": "Cirrus", "cat": "Cloud Types", "latin": "Cirrus", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "High, thin", "desc": "A genuine wispy, thin cloud, actually made almost entirely of ice crystals due to real high, cold altitudes.", "facts": ["Altitude: 20,000+ ft", "Composition: ice crystals", "Often signals a change in weather within a day", "Thin and feathery in appearance"], "num": "02"}, {"id": "stratus", "name": "Stratus", "cat": "Cloud Types", "latin": "Stratus", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "Low, flat", "desc": "A genuine flat, gray layer cloud, actually blankets the sky uniformly and real often brings light drizzle or mist.", "facts": ["Altitude: near surface to 6,500 ft", "Appearance: uniform gray layer", "Often brings light drizzle", "Can reduce visibility significantly"], "num": "03"}, {"id": "cumulonimbus", "name": "Cumulonimbus", "cat": "Cloud Types", "latin": "Cumulonimbus", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "Towering", "desc": "A genuine towering storm cloud, actually capable of producing real heavy rain, hail, lightning, and even tornadoes.", "facts": ["Altitude: base 1,000 ft, top 40,000+ ft", "Can produce hail and lightning", "Associated with severe thunderstorms", "Often has a distinctive anvil top"], "num": "04"}, {"id": "hurricane", "name": "Hurricane", "cat": "Storm Types", "latin": "Tropical cyclone", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "Cat 1-5", "desc": "A genuine tropical cyclone, actually forms over warm ocean water and real classified by wind speed into five categories.", "facts": ["Formation: warm ocean water above 80°F", "Categories: 1-5 by wind speed", "Diameter: often 300+ miles", "Eye is typically calm at the center"], "num": "05"}, {"id": "tornado", "name": "Tornado", "cat": "Storm Types", "latin": "Twister", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "EF0-EF5", "desc": "A genuine violently rotating column of air, actually rated on the Enhanced Fujita scale by real observed damage rather than direct measurement.", "facts": ["Rating scale: EF0 to EF5", "Wind speeds: up to 300+ mph", "Often forms from supercell thunderstorms", "Most common in the central United States"], "num": "06"}, {"id": "thunderstorm", "name": "Thunderstorm", "cat": "Storm Types", "latin": "Convective storm", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "~1,800/day", "desc": "A genuine convective storm, actually occurs roughly 1,800 times per day worldwide, driven by real rising warm, moist air.", "facts": ["Global frequency: ~1,800 occurring at any moment", "Requires warm, moist, unstable air", "Produces lightning and thunder", "Can spawn tornadoes or hail"], "num": "07"}, {"id": "blizzard", "name": "Blizzard", "cat": "Storm Types", "latin": "Severe winter storm", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "35+ mph", "desc": "A genuine severe winter storm, actually officially requires real sustained winds of 35 mph and visibility under a quarter mile.", "facts": ["Wind requirement: 35+ mph sustained", "Visibility: under 1/4 mile", "Duration: at least 3 hours", "Can cause dangerous whiteout conditions"], "num": "08"}, {"id": "tropical-climate", "name": "Tropical Climate", "cat": "Climate Zones", "latin": "Koppen: A", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "~64°F+", "desc": "A genuine climate zone, actually maintains average temperatures above 64°F year-round with real high humidity and rainfall.", "facts": ["Average temp: above 64°F all year", "Found near the equator", "High humidity and rainfall", "Supports rainforest ecosystems"], "num": "09"}, {"id": "arid-climate", "name": "Arid Climate", "cat": "Climate Zones", "latin": "Koppen: B", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "<10 in/yr", "desc": "A genuine climate zone, actually receives less than 10 inches of rain per year, real defining most of the world's deserts.", "facts": ["Annual rainfall: under 10 inches", "Covers roughly one-third of Earth's land", "Large daily temperature swings", "Found on multiple continents"], "num": "10"}, {"id": "temperate-climate", "name": "Temperate Climate", "cat": "Climate Zones", "latin": "Koppen: C", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "4 seasons", "desc": "A genuine climate zone, actually experiences real distinct seasonal variation, with moderate temperatures across most of the year.", "facts": ["Features: four distinct seasons", "Moderate temperature range", "Common in mid-latitude regions", "Supports deciduous forest ecosystems"], "num": "11"}, {"id": "polar-climate", "name": "Polar Climate", "cat": "Climate Zones", "latin": "Koppen: E", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "<50°F", "desc": "A genuine climate zone, actually never exceeds 50°F even in its warmest month, real found at Earth's highest latitudes.", "facts": ["Warmest month: below 50°F", "Found near the poles", "Minimal precipitation, mostly as snow", "Includes tundra and ice cap subtypes"], "num": "12"}, {"id": "rainbow", "name": "Rainbow", "cat": "Weather Phenomena", "latin": "Optical refraction", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "42° arc", "desc": "A genuine optical phenomenon, actually forms when sunlight refracts and reflects inside real raindrops at a consistent 42-degree angle.", "facts": ["Formed by: light refracting in raindrops", "Viewing angle: approximately 42 degrees", "Requires sun behind the observer", "Double rainbows reverse color order"], "num": "13"}, {"id": "lightning", "name": "Lightning", "cat": "Weather Phenomena", "latin": "Electrostatic discharge", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "~30,000°C", "desc": "A genuine electrostatic discharge, actually heats surrounding air to roughly 30,000°C, real hotter than the surface of the sun.", "facts": ["Temperature: ~30,000°C, hotter than the sun's surface", "Speed: near-instantaneous", "Causes thunder via rapid air expansion", "Strikes Earth about 8 million times daily"], "num": "14"}, {"id": "fog", "name": "Fog", "cat": "Weather Phenomena", "latin": "Ground-level cloud", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "stat": "<1 km vis", "desc": "A genuine ground-level cloud, actually forms when air near the surface cools to its real dew point, condensing visible water droplets.", "facts": ["Definition: visibility under 1 km", "Forms when air cools to dew point", "Common in valleys and coastal areas", "Usually clears as the sun warms the air"], "num": "15"}, {"id": "aurora-borealis", "name": "Aurora Borealis", "cat": "Weather Phenomena", "latin": "Northern lights", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "stat": "~60-620 mi up", "desc": "A genuine atmospheric light display, actually occurs when solar particles collide with real gases in Earth's upper atmosphere.", "facts": ["Altitude: roughly 60-620 miles up", "Caused by solar wind particles", "Colors depend on which gas is excited", "Best viewed near the poles"], "num": "16"}], "articles": [{"id": "how-weather-fronts-actually-collide", "cat": "Weather", "title": "How Weather Fronts Actually Collide", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely real clash of air masses.", "date": "Sep 6, 2026", "read": "3 min read", "body": ["A genuine weather front actually forms where two air masses of real different temperature and humidity meet and interact.", "A genuine cold front actually pushes beneath warmer air, forcing it upward and real often triggering sudden, intense storms.", "We would note that genuine warm fronts actually move more slowly, producing more gradual, prolonged real precipitation over a wider area."], "pnum": "C01"}, {"id": "what-actually-makes-wind-blow", "cat": "Weather", "title": "What Actually Makes Wind Blow", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "excerpt": "A genuinely real pressure-driven flow.", "date": "Aug 30, 2026", "read": "3 min read", "body": ["Genuine wind actually results from air moving from real areas of high pressure toward areas of lower pressure.", "Earth's genuine rotation actually deflects this movement through the Coriolis effect, curving real wind patterns across the globe.", "We would note that genuine local factors like terrain and temperature actually create smaller-scale wind patterns layered atop these real larger global systems."], "pnum": "C02"}, {"id": "how-humidity-actually-affects-how-hot-it-feels", "cat": "Weather", "title": "How Humidity Actually Affects How Hot It Feels", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely real reason for 'feels like' temperatures.", "date": "Aug 23, 2026", "read": "3 min read", "body": ["Genuine high humidity actually slows the evaporation of sweat, reducing the body's real ability to cool itself effectively.", "This genuine effect actually explains why 90°F with high humidity can feel far hotter than real 90°F in dry conditions.", "We would note that genuine heat index calculations actually combine temperature and humidity specifically to estimate this real perceived temperature."], "pnum": "C03"}, {"id": "how-meteorologists-actually-predict-tomorrows-weather", "cat": "Forecasting", "title": "How Meteorologists Actually Predict Tomorrow's Weather", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "excerpt": "A genuinely real computational process.", "date": "Aug 16, 2026", "read": "4 min read", "body": ["Genuine forecasters actually rely on real complex computer models that simulate atmospheric physics across millions of data points.", "These genuine models actually run multiple times with real slightly varied starting conditions, producing a range of possible outcomes.", "We would note that genuine forecast accuracy actually decreases significantly beyond about seven days, since real small errors compound over time."], "pnum": "C04"}, {"id": "what-actually-happens-inside-a-weather-balloon", "cat": "Forecasting", "title": "What Actually Happens Inside a Weather Balloon", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely real data-gathering journey skyward.", "date": "Aug 9, 2026", "read": "3 min read", "body": ["A genuine weather balloon actually carries a small instrument package called a radiosonde real thousands of feet into the atmosphere.", "This genuine device actually measures temperature, humidity, and pressure, transmitting real data back to ground stations continuously.", "We would note that genuine balloons actually expand and eventually burst at high altitude, with the instrument package real returning by parachute."], "pnum": "C05"}, {"id": "how-weather-satellites-actually-see-storms-forming", "cat": "Forecasting", "title": "How Weather Satellites Actually See Storms Forming", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "excerpt": "A genuinely real eye from orbit.", "date": "Aug 2, 2026", "read": "3 min read", "body": ["Genuine weather satellites actually orbit at fixed points, capturing real continuous images of cloud patterns developing below.", "Infrared genuine sensors actually detect cloud-top temperatures, helping forecasters identify real storm intensity even in darkness.", "We would note that genuine satellite data actually gets combined with ground radar for the most complete real picture of developing weather."], "pnum": "C06"}, {"id": "what-actually-separates-weather-from-climate", "cat": "Climate", "title": "What Actually Separates Weather From Climate", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely real distinction of timescale.", "date": "Jul 26, 2026", "read": "3 min read", "body": ["Genuine weather actually describes real short-term atmospheric conditions, while climate describes long-term averaged patterns over decades.", "A genuine single cold winter actually says little about climate trends, since real climate is measured across many years of data.", "We would recommend genuinely thinking of weather as a single moment and climate as the real statistical pattern behind many such moments."], "pnum": "C07"}, {"id": "how-ocean-currents-actually-shape-regional-climate", "cat": "Climate", "title": "How Ocean Currents Actually Shape Regional Climate", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "excerpt": "A genuinely real global heat-transport system.", "date": "Jul 19, 2026", "read": "3 min read", "body": ["Genuine ocean currents actually transport enormous amounts of heat around the globe, real moderating temperatures along coastlines.", "The genuine Gulf Stream, for example, actually keeps parts of Western Europe real significantly warmer than their latitude would suggest.", "We would note that genuine disruptions to these currents actually could shift regional climate patterns substantially, a real area of ongoing research."], "pnum": "C08"}, {"id": "what-actually-causes-the-seasons-to-change", "cat": "Climate", "title": "What Actually Causes the Seasons to Change", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely real tilt, not distance.", "date": "Jul 12, 2026", "read": "3 min read", "body": ["Genuine seasons actually result from Earth's real axial tilt, not from changing distance to the sun as commonly assumed.", "As genuine Earth orbits, different hemispheres actually receive more direct sunlight at different times, real driving temperature shifts.", "We would note that genuine this tilt also actually explains why seasons are reversed between the Northern and Southern Hemispheres simultaneously."], "pnum": "C09"}, {"id": "how-hurricanes-actually-get-their-category", "cat": "Storms", "title": "How Hurricanes Actually Get Their Category", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "excerpt": "A genuinely real wind-speed classification.", "date": "Jul 5, 2026", "read": "3 min read", "body": ["A genuine hurricane's actual category comes from the Saffir-Simpson scale, based real specifically on sustained wind speed alone.", "This genuine scale actually doesn't account for rainfall or storm surge, which can real cause severe damage even in lower-category storms.", "We would note that genuine category alone actually doesn't fully predict a hurricane's impact, since size and forward speed also matter significantly."], "pnum": "C10"}, {"id": "what-actually-happens-inside-a-tornado", "cat": "Storms", "title": "What Actually Happens Inside a Tornado", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely violent, poorly understood core.", "date": "Jun 28, 2026", "read": "3 min read", "body": ["A genuine tornado's actual interior features extreme pressure drops and real wind speeds that can exceed 300 miles per hour.", "Scientists genuinely still find it difficult to actually measure conditions directly inside a tornado, given the real extreme danger involved.", "We would note that genuine most tornado data actually comes from Doppler radar and after-the-fact damage assessment rather than direct measurement."], "pnum": "C11"}, {"id": "how-lightning-actually-chooses-where-to-strike", "cat": "Storms", "title": "How Lightning Actually Chooses Where to Strike", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "excerpt": "A genuinely real path of least resistance.", "date": "Jun 21, 2026", "read": "3 min read", "body": ["Genuine lightning actually follows the real path of least electrical resistance between a charged cloud and the ground below.", "Tall genuine objects actually get struck more often because they real shorten the distance the electrical charge needs to travel.", "We would note that genuine lightning rods actually work by providing this easier path, safely conducting the real charge away from structures."], "pnum": "C12"}, {"id": "what-actually-causes-a-rainbow-to-appear", "cat": "Explainers", "title": "What Actually Causes a Rainbow to Appear", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely real optical trick of light and water.", "date": "Jun 14, 2026", "read": "3 min read", "body": ["A genuine rainbow actually forms when sunlight enters a raindrop, bends, reflects internally, and real exits at a specific angle.", "This genuine bending actually separates white light into its component colors, real similar to how a prism splits light.", "We would note that genuine no two people actually see the exact same rainbow, since it depends on the real precise angle between sun, rain, and viewer."], "pnum": "C13"}, {"id": "how-snowflakes-actually-form-their-shape", "cat": "Explainers", "title": "How Snowflakes Actually Form Their Shape", "img": "https://images.unsplash.com/photo-1595810033299-5a6fcda2aa71?w=1200&q=80&auto=format&fit=crop", "excerpt": "A genuinely real molecular growth process.", "date": "Jun 7, 2026", "read": "3 min read", "body": ["A genuine snowflake actually forms as water vapor freezes directly onto a real tiny dust or pollen particle high in the atmosphere.", "The genuine six-sided symmetry actually comes from the hexagonal molecular structure water forms real as it crystallizes.", "We would note that genuine temperature and humidity actually shape each flake's unique pattern, making truly identical snowflakes real extraordinarily unlikely."], "pnum": "C14"}, {"id": "what-actually-makes-the-sky-blue", "cat": "Explainers", "title": "What Actually Makes the Sky Blue", "img": "https://images.unsplash.com/photo-1560928863-e140ee0fc733?w=1600&q=80&auto=format&fit=crop", "excerpt": "A genuinely real scattering of light.", "date": "May 31, 2026", "read": "3 min read", "body": ["Genuine sunlight actually contains all visible colors, but real shorter blue wavelengths scatter more easily in the atmosphere.", "This genuine scattering, called Rayleigh scattering, actually spreads blue light across the real sky in every direction we look.", "We would note that genuine sunsets actually appear red because sunlight travels through more atmosphere, scattering away real most of the blue light first."], "pnum": "C15"}], "faq": [{"q": "Are the facts on Climora scientifically accurate?", "a": "Yes. Every guide entry is checked against published meteorology and climatology references, and we note when a fact is an estimate or varies by region."}, {"q": "Can I submit a photo of a weather event I'd like profiled?", "a": "Yes, message us through the contact page with your photo and location details and we may feature it in a future journal entry."}, {"q": "Is Climora free to use?", "a": "Yes, Climora is a free educational resource. We don't sell anything on this site."}, {"q": "Can I use your photos or content elsewhere?", "a": "Our written content is ours, but photography is sourced under license; please contact us before reusing anything beyond personal reference."}, {"q": "How often is new content added?", "a": "We publish new guide entries and journal entries regularly; check the journal page for the latest additions."}, {"q": "Do you cover weather topics outside the ones currently listed?", "a": "We're steadily expanding coverage. Message us if there's a topic you'd like to see profiled."}, {"q": "Is Climora a substitute for an actual weather forecast?", "a": "No. We explain weather concepts, but for current forecasts and warnings, please consult your national weather service."}, {"q": "Do you have a newsletter?", "a": "Yes, subscribe at the bottom of the homepage for a biweekly note on new guide entries and journal entries."}]};
+const LEGAL = {"privacy": ["Privacy Policy", [["What we collect", "We collect your email address only if you subscribe to our newsletter, and basic technical information like browser type through analytics."], ["How we use it", "Your email is used only to send our newsletter if you have opted in. We never sell or share subscriber data with third parties."], ["Cookies", "We use basic analytics cookies to understand site traffic. We do not use third-party advertising cookies."], ["Data sharing", "We share subscriber emails only with our email delivery provider, solely to send the newsletter."], ["Your rights", "You can unsubscribe at any time, and can request a copy or deletion of your data by emailing hello@climora.com. We respond within 30 days."], ["Changes", "We may update this policy periodically. The date at the top reflects the most recent update."]]], "terms": ["Terms & Conditions", [["Acceptance", "By using climora.com you agree to these terms. If you do not agree, please do not use the site."], ["Content accuracy", "We make reasonable efforts to ensure weather information is accurate, but Climora is an educational resource, not a live forecasting service."], ["Intellectual property", "Written content on Climora is owned by us; please contact us before reproducing it elsewhere. Photography is used under license and should not be reused without permission."], ["Liability", "To the fullest extent permitted by law, Climora is not liable for any damages arising from use of this site or reliance on its content."], ["Governing law", "These terms are governed by the laws of the State of Colorado."]]], "cookies": ["Cookie Policy", [["What cookies are", "Small text files that help understand how visitors use the site."], ["How we use them", "Basic first-party analytics only. No third-party advertising cookies."], ["Managing preferences", "Most browsers let you block or delete cookies at any time."]]]};
+const ABOUT_BODY = ["Climora started in 2023 after our founder, a former broadcast meteorology assistant, wanted a genuine free resource that treated weather with real atmospheric science care rather than surface-level trivia.", "We write every guide entry ourselves, checking real facts against published meteorology and climatology sources before anything goes live.", "That has meant being careful with claims. A fact that's true for one storm system can genuinely not hold for another, and we try to note real exceptions rather than generalize.", "We publish journal entries on forecasting, climate, and storm science alongside the guide, because we think understanding the actual atmosphere matters as much as naming what's in the sky.", "We are a small team, and every new entry is genuinely reviewed by someone on our team before it's published."];
+const VALUES = [["Checked against real sources", "Every fact verified against meteorology references."], ["Honest about exceptions", "We note when something varies by region or storm."], ["Free, always", "No purchases, no paywalls, just information."], ["Explanation over just naming", "Guides on how weather works, not just what to call it."], ["A tighter catalog, on purpose", "We would rather publish fewer entries we've genuinely checked."]];
+const CATS = ["Cloud Types","Storm Types","Climate Zones","Weather Phenomena"];
+
+function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+function showToast(msg){
+  const t = document.getElementById("toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(window._toastTimer); window._toastTimer = setTimeout(()=>t.classList.remove("show"), 2400);
+}
+
+function cloudCard(s){
+  return `<a class="cloud-card" href="#/species/${s.id}">
+    <div class="cloud-media"><img src="${s.img}" alt="${esc(s.name)}" loading="lazy"><span class="cloud-badge">${s.stat}</span></div>
+    <div class="cloud-body"><span class="cloud-cat">${s.cat}</span><h3>${esc(s.name)}</h3>
+    <div class="cloud-latin">${esc(s.latin)}</div></div></a>`;
+}
+function isobarCard(a){
+  return `<a class="isobar-card" href="#/article/${a.id}">
+    <img src="${a.img}" alt="${esc(a.title)}" loading="lazy">
+    <div class="isobar-body"><span class="isobar-cat">${a.cat}</span><h3>${esc(a.title)}</h3><p>${esc(a.excerpt)}</p>
+    <span class="isobar-meta">${a.date} · ${a.read}</span></div></a>`;
+}
+
+function pageHome(){
+  const featured = DATA.species.filter((s,i)=>i%4===1).slice(0,4);
+  const latest = DATA.articles.slice(0,6);
+  return `
+  <section class="isobar-hero"><div class="isobar-band"><img src="${IMG_A}" alt="Climora weather and climate">
+    <svg class="isobar-svg" viewBox="0 0 200 200">
+      ${[92,76,60,44,28].map((r,i)=>`<circle cx="100" cy="100" r="${r}" fill="none" stroke="${i%2===0?'#2FA8D8':'#E8A23C'}" stroke-width="1.6" opacity="${0.85-i*0.12}"/>`).join("")}
+    </svg>
+    <div class="isobar-hero-content">
+      <div class="eyebrow">Field guide, est. 2023</div>
+      <h1>A field guide that actually checks its facts.</h1>
+      <p>Guide entries and journal articles on clouds, storms, climate zones, and weather phenomena, verified against real meteorology sources.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="#/species">Browse the weather guide</a>
+        <a class="btn btn-outline" href="#/blog">Read the journal</a>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="cat-strip"><div class="wrap"><div class="cat-strip-row">
+    ${CATS.map(c=>`<a href="#/species?cat=${encodeURIComponent(c)}">${c}</a>`).join("")}
+  </div></div></section>
+
+  <section class="centered-intro">
+    <div class="intro-eyebrow">Why Climora</div>
+    <h2>Checked, not copied</h2>
+    <p>A fact that's true for one storm system can genuinely not hold for another. We check every entry against real sources and note exceptions plainly, rather than generalizing.</p>
+    <a class="btn btn-outline" style="border-color:var(--ink);color:var(--ink)" href="#/about">How we research</a>
+  </section>
+
+  <section class="species-section"><div class="wrap">
+    <div class="section-head"><div><h2>Weather guide</h2><p>A few entries worth starting with.</p></div>
+      <a class="btn btn-outline" style="border-color:var(--ink);color:var(--ink)" href="#/species">View full guide</a></div>
+    <div class="cloud-grid">${featured.map(cloudCard).join("")}</div>
+  </div></section>
+
+  <section class="journal"><div class="wrap">
+    <div class="section-head"><div><h2>The journal</h2><p>Forecasting, climate, and honest storm science.</p></div>
+      <a class="btn btn-outline" style="border-color:var(--ink);color:var(--ink)" href="#/blog">All entries</a></div>
+    <div class="isobar-field"><div class="isobar-grid">${latest.map(isobarCard).join("")}</div></div>
+  </div></section>
+
+  <section class="newsletter">
+    <h2>The Climora Forecast</h2>
+    <p>A short, biweekly note on new guide entries and journal entries.</p>
+    <form class="nl-form" onsubmit="event.preventDefault();showToast('Subscribed — thanks!')">
+      <input type="email" placeholder="you@email.com" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+  `;
+}
+
+function pageSpecies(params){
+  const activeCat = params.get("cat") || "All";
+  return `
+  <section class="pagehero"><div class="wrap">
+    <h1>The weather guide</h1>
+    <p>Clouds, storms, climate zones, and weather phenomena, profiled with real checked facts.</p>
+  </div></section>
+  <section class="species-section"><div class="wrap">
+    <div class="filterbar">
+      <button class="${activeCat==='All'?'active':''}" onclick="location.hash='#/species'">All</button>
+      ${CATS.map(c=>`<button class="${activeCat===c?'active':''}" onclick="location.hash='#/species?cat=${encodeURIComponent(c)}'">${c}</button>`).join("")}
+    </div>
+    <div class="cloud-grid">${DATA.species.filter(s=>activeCat==='All'||s.cat===activeCat).map(cloudCard).join("")}</div>
+  </div></section>`;
+}
+
+function pageSpeciesDetail(id){
+  const s = DATA.species.find(s=>s.id===id);
+  if(!s) return `<div class="wrap" style="padding:60px 24px">Entry not found. <a href="#/species">Back to guide</a></div>`;
+  const related = DATA.species.filter(x=>x.cat===s.cat && x.id!==s.id).slice(0,4);
+  return `
+  <div class="wrap" style="padding-top:20px"><div class="crumb"><a href="#/species">Weather Guide</a> / <a href="#/species?cat=${encodeURIComponent(s.cat)}">${s.cat}</a></div></div>
+  <div class="wrap pd">
+    <div class="pd-media"><img src="${s.img}" alt="${esc(s.name)}"></div>
+    <div>
+      <span class="pd-cat">${s.cat}</span>
+      <h1>${esc(s.name)}</h1>
+      <div class="pd-latin">${esc(s.latin)}</div>
+      <div class="pd-stat">${s.stat}</div>
+      <p class="pd-desc">${esc(s.desc)}</p>
+      <ul class="pd-feat">${s.facts.map(f=>`<li>${esc(f)}</li>`).join("")}</ul>
+    </div>
+  </div>
+  ${related.length?`<section class="species-section"><div class="wrap"><div class="section-head"><h2>Related entries</h2></div><div class="cloud-grid">${related.map(cloudCard).join("")}</div></div></section>`:""}`;
+}
+
+function pageBlog(params){
+  const activeCat = params.get("cat") || "All";
+  const cats = ["Weather","Forecasting","Climate","Storms","Explainers"];
+  return `
+  <section class="pagehero"><div class="wrap"><h1>The Climora Journal</h1><p>Forecasting, climate, and honest storm science.</p></div></section>
+  <section class="journal"><div class="wrap">
+    <div class="filterbar">
+      <button class="${activeCat==='All'?'active':''}" onclick="location.hash='#/blog'">All</button>
+      ${cats.map(c=>`<button class="${activeCat===c?'active':''}" onclick="location.hash='#/blog?cat=${encodeURIComponent(c)}'">${c}</button>`).join("")}
+    </div>
+    <div class="isobar-field"><div class="isobar-grid">${DATA.articles.filter(a=>activeCat==='All'||a.cat===activeCat).map(isobarCard).join("")}</div></div>
+  </div></section>`;
+}
+
+function pageArticle(id){
+  const a = DATA.articles.find(a=>a.id===id);
+  if(!a) return `<div class="wrap" style="padding:60px 24px">Article not found. <a href="#/blog">Back to journal</a></div>`;
+  return `
+  <div class="wrap" style="padding-top:20px"><div class="crumb"><a href="#/blog">Journal</a> / <a href="#/blog?cat=${encodeURIComponent(a.cat)}">${a.cat}</a></div></div>
+  <div class="article-wrap">
+    <span class="isobar-cat">${a.cat}</span><h1>${esc(a.title)}</h1>
+    <span class="isobar-meta">${a.date} · ${a.read}</span>
+    <img src="${a.img}" alt="${esc(a.title)}">
+    ${a.body.map(p=>`<p>${esc(p)}</p>`).join("")}
+  </div>`;
+}
+
+function pageAbout(){
+  return `
+  <section class="pagehero"><div class="wrap"><h1>About Climora</h1></div></section>
+  <div class="about-body">${ABOUT_BODY.map(p=>`<p>${esc(p)}</p>`).join("")}</div>
+  <div class="values-grid">${VALUES.map(v=>`<div class="value-card"><h4>${esc(v[0])}</h4><p>${esc(v[1])}</p></div>`).join("")}</div>`;
+}
+
+function pageContact(){
+  return `
+  <section class="pagehero"><div class="wrap"><h1>Contact us</h1><p>Questions, corrections, or a weather event you'd like identified.</p></div></section>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p>Our team reads every message and replies personally, not from a shared inbox.</p>
+      <h4>Email</h4><p>hello@climora.com</p>
+      <h4>Response time</h4><p>2–3 business days</p>
+    </div>
+    <form class="contact-form" onsubmit="event.preventDefault();showToast('Message sent — we will reply soon');this.reset()">
+      <input placeholder="Your name" required>
+      <input type="email" placeholder="Your email" required>
+      <textarea placeholder="How can we help?" required></textarea>
+      <button class="btn btn-primary" type="submit">Send message</button>
+    </form>
+  </div>`;
+}
+
+function pageFAQ(){
+  return `<section class="pagehero"><div class="wrap"><h1>Frequently asked questions</h1></div></section>
+  <div class="faq-list">${DATA.faq.map(f=>`<details class="faq-item"><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("")}</div>`;
+}
+
+function pageLegal(slug){
+  const entry = LEGAL[slug] || LEGAL["privacy"];
+  const tabs = [["privacy","Privacy"],["terms","Terms"],["cookies","Cookies"]];
+  return `<section class="pagehero"><div class="wrap"><h1>${entry[0]}</h1></div></section>
+  <div class="legal-body">
+    <div class="legal-tabs">${tabs.map(t=>`<a class="${t[0]===slug?'active':''}" href="#/legal/${t[0]}">${t[1]}</a>`).join("")}</div>
+    <div class="updated">Last updated: September 2026</div>
+    ${entry[1].map(s=>`<h2>${esc(s[0])}</h2><p>${esc(s[1])}</p>`).join("")}
+  </div>`;
+}
+
+const IMG_A = DATA.species[0].img;
+
+function router(){
+  const hash = location.hash.slice(1) || "/";
+  const [path, qs] = hash.split("?");
+  const params = new URLSearchParams(qs||"");
+  const parts = path.split("/").filter(Boolean);
+  const app = document.getElementById("app");
+  document.getElementById("mnav").classList.remove("open");
+  document.querySelectorAll(".navlinks a").forEach(a=>a.classList.toggle("active", a.getAttribute("data-route")==="/"+(parts[0]||"")));
+
+  if(parts.length===0) app.innerHTML = pageHome();
+  else if(parts[0]==="species" && !parts[1]) app.innerHTML = pageSpecies(params);
+  else if(parts[0]==="species" && parts[1]) app.innerHTML = pageSpeciesDetail(parts[1]);
+  else if(parts[0]==="blog") app.innerHTML = pageBlog(params);
+  else if(parts[0]==="article") app.innerHTML = pageArticle(parts[1]);
+  else if(parts[0]==="about") app.innerHTML = pageAbout();
+  else if(parts[0]==="contact") app.innerHTML = pageContact();
+  else if(parts[0]==="faq") app.innerHTML = pageFAQ();
+  else if(parts[0]==="legal") app.innerHTML = pageLegal(parts[1]||"privacy");
+  else app.innerHTML = pageHome();
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange", router);
+window.addEventListener("DOMContentLoaded", router);
+</script>
+</body>
+</html>
